@@ -1,0 +1,28 @@
+import pandas as pd
+
+# Define a list of CSV file names
+csv_files = [
+    "Action.csv", "Animation.csv", "Comedy.csv", "Crime.csv", "War.csv",
+    "Romance.csv", "Horror.csv", "Documentary.csv", "Fantasy.csv",
+    "Thriller.csv", "Sci-Fi.csv"
+]
+
+# Initialize an empty list to store DataFrames
+dataframes = []
+
+# Loop through each file and attempt to read it
+for file in csv_files:
+    try:
+        df = pd.read_csv(file, encoding="utf-8")
+        dataframes.append(df)
+    except (FileNotFoundError, pd.errors.EmptyDataError) as e:
+        print(f"Warning: {file} skipped ({e})")
+    except Exception as e:
+        print(f"Error reading {file}: {e}")
+
+# Merge all DataFrames if any valid data was found
+if dataframes:
+    df_merge = pd.concat(dataframes, ignore_index=True)
+    print("Merged DataFrame:\n", df_merge)
+else:
+    print("No valid CSV files found.")
